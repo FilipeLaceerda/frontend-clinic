@@ -1,0 +1,107 @@
+[
+  {
+    "idProcedimento": 1,
+    "descricao": "Remocao de placa, tartaro e polimento",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Limpeza Profilaxia",
+    "valor": 150.2
+  },
+  {
+    "idProcedimento": 2,
+    "descricao": "Restauracao de carie em 1 face",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Restauracao 1 face",
+    "valor": 200.5
+  },
+  {
+    "idProcedimento": 3,
+    "descricao": "Restauracao de carie em multiplas faces",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Restauracao multifacial",
+    "valor": 350.75
+  },
+  {
+    "idProcedimento": 4,
+    "descricao": "Tratamento de canal de 1 canal",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Tratamento Endodontico 1 canal",
+    "valor": 400
+  },
+  {
+    "idProcedimento": 5,
+    "descricao": "Remocao de dente permanente",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Extracao Simples",
+    "valor": 250
+  },
+  {
+    "idProcedimento": 6,
+    "descricao": "Clareamento em consultorio sessao",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Clareamento Dental",
+    "valor": 300
+  },
+  {
+    "idProcedimento": 7,
+    "descricao": "Aplicacao topica de fluor",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Aplicacao de Fluor",
+    "valor": 100
+  },
+  {
+    "idProcedimento": 8,
+    "descricao": "Exame radiografico periapical",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Radiografia Periapical",
+    "valor": 120
+  },
+  {
+    "idProcedimento": 9,
+    "descricao": "Tratamento periodontal raspagem",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Raspagem e Alisamento Radicular",
+    "valor": 200
+  },
+  {
+    "idProcedimento": 10,
+    "descricao": "Confecao e prova de protese parcial removivel",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Protese Parcial Removivel",
+    "valor": 500
+  },
+  {
+    "idProcedimento": 11,
+    "descricao": "Procedimento de implante dentario simulacao e planejamento",
+    "tipoProcedimento": "CLÍNICO",
+    "nome": "Implante simulado",
+    "valor": 1000
+  },
+  {
+    "idProcedimento": 12,
+    "descricao": "Colocacao do aparelho fixo",
+    "tipoProcedimento": "ORTODÔNTICO",
+    "nome": "Instalacao de Aparelho Ortodontico",
+    "valor": 1500
+  },
+  {
+    "idProcedimento": 13,
+    "descricao": "Ajustes periodicos do aparelho",
+    "tipoProcedimento": "ORTODÔNTICO",
+    "nome": "Ajuste de Aparelho Ortodontico",
+    "valor": 200
+  },
+  {
+    "idProcedimento": 14,
+    "descricao": "Remocao do aparelho ortodontico",
+    "tipoProcedimento": "ORTODÔNTICO",
+    "nome": "Retirada de Aparelho Ortodontico",
+    "valor": 300
+  },
+  {
+    "descricao": "Cirurgia para remocao de terceiros molares inclusos",
+    "tipoProcedimento": "CIRÚRGICO",
+    "nome": "Extracao de Siso",
+    "valor": 800,
+    "idProcedimento": 15
+  }
+]
