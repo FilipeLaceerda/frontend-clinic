@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { listar } from '../services/api';
 
-export default function Listagem({ titulo, descricao, recurso, colunas }) {
+export default function Listagem({ titulo, descricao, carregar, colunas }) {
   const [dados, setDados] = useState([]);
   const [busca, setBusca] = useState('');
   const [carregando, setCarregando] = useState(true);
@@ -12,12 +11,12 @@ export default function Listagem({ titulo, descricao, recurso, colunas }) {
     const controller = new AbortController();
     setCarregando(true);
     setErro('');
-    listar(recurso, controller.signal)
+    carregar({}, controller.signal)
       .then((lista) => { if (!controller.signal.aborted) setDados(lista); })
-      .catch((error) => { if (!controller.signal.aborted) setErro(error.message); })
+      .catch((error) => { if (!controller.signal.aborted) setErro(error.response?.data?.error || error.response?.data?.mensagem || error.response?.data?.message || 'Não foi possível carregar os dados. Verifique o backend e tente novamente.'); })
       .finally(() => { if (!controller.signal.aborted) setCarregando(false); });
     return () => controller.abort();
-  }, [recurso, tentativa]);
+  }, [carregar, tentativa]);
 
   const normalizar = (valor) => String(valor ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const filtrados = dados.filter((item) => colunas.some((coluna) =>

@@ -3,7 +3,6 @@ import Atendimentos from './pages/Atendimentos';
 import Dentistas from './pages/Dentistas';
 import Procedimentos from './pages/Procedimentos';
 import Secretarias from './pages/Secretarias';
-import { useApi } from './services/api';
 
 const paginas = [
   ['/atendimentos', 'Atendimentos'], ['/dentistas', 'Dentistas'],
@@ -19,7 +18,6 @@ export default function App() {
         <nav aria-label="Menu principal">
           {paginas.map(([path, label]) => <NavLink key={path} to={path}>{label}</NavLink>)}
         </nav>
-        <small>{useApi ? 'Conectado à configuração da API' : 'Demonstração · dados locais'}</small>
       </aside>
       <main>
         <Routes>

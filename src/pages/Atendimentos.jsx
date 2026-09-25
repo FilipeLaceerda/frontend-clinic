@@ -1,5 +1,6 @@
+import { listar } from '../services/atendimentoService';
 import Listagem from '../components/Listagem';
-import { dataBR, moeda } from '../services/api';
+import { dataBR, moeda } from '../utils/formatadores';
 
 const colunas = [
   { campo: 'idAtendimento', titulo: 'Número' },
@@ -16,5 +17,5 @@ const colunas = [
 ];
 
 export default function Atendimentos() {
-  return <Listagem titulo="Atendimentos" descricao="Consulte os horários e as informações dos atendimentos." recurso="atendimentos" colunas={colunas} />;
+  return <Listagem titulo="Atendimentos" descricao="Consulte os horários e as informações dos atendimentos." carregar={listar} colunas={colunas} />;
 }

@@ -1,3 +1,4 @@
+import { listar } from '../services/dentistaService';
 import Listagem from '../components/Listagem';
 
 const colunas = [
@@ -9,5 +10,5 @@ const colunas = [
 ];
 
 export default function Dentistas() {
-  return <Listagem titulo="Dentistas" descricao="Profissionais e especialidades da clínica." recurso="dentistas" colunas={colunas} />;
+  return <Listagem titulo="Dentistas" descricao="Profissionais e especialidades da clínica." carregar={listar} colunas={colunas} />;
 }
