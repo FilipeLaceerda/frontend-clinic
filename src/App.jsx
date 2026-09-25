@@ -1,4 +1,5 @@
-import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import BarraLateral from './components/BarraLateral';
 import Atendimentos from './pages/Atendimentos';
 import Dentistas from './pages/Dentistas';
 import Procedimentos from './pages/Procedimentos';
@@ -12,13 +13,7 @@ const paginas = [
 export default function App() {
   return (
     <div className="layout">
-      <aside>
-        <a className="brand" href="/">+ Clinic</a>
-        <p>Gestão odontológica</p>
-        <nav aria-label="Menu principal">
-          {paginas.map(([path, label]) => <NavLink key={path} to={path}>{label}</NavLink>)}
-        </nav>
-      </aside>
+      <BarraLateral paginas={paginas} />
       <main>
         <Routes>
           <Route path="/atendimentos" element={<Atendimentos />} />

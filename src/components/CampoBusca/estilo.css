@@ -1,0 +1,7 @@
+.campo-busca {
+    display: grid;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    width: min(100%, 340px);
+}
