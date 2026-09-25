@@ -1,21 +1,25 @@
+import { useNavigate } from 'react-router-dom';
 import { listar } from '../services/atendimentoService';
-import Listagem from '../components/Listagem';
-import { dataBR, moeda } from '../utils/formatadores';
-
-const colunas = [
-  { campo: 'idAtendimento', titulo: 'Número' },
-  { campo: 'data', titulo: 'Data', formatar: dataBR },
-  { campo: 'horario_inicio', titulo: 'Início' },
-  { campo: 'horario_fim', titulo: 'Fim' },
-  { campo: 'fk_CPF_Paciente', titulo: 'CPF do paciente' },
-  { campo: 'fk_CPF_Secretaria', titulo: 'CPF da secretária' },
-  { campo: 'tipoAtendimento', titulo: 'Tipo' },
-  { campo: 'status', titulo: 'Status', formatar: (valor) => ({ AGENDADO: 'Agendado', CANCELADO: 'Cancelado', CONCLUIDO: 'Concluído', 'CONCLUÍDO': 'Concluído' }[valor] || valor || '—') },
-  { campo: 'valorTotal', titulo: 'Valor total', formatar: moeda },
-  { campo: 'parcelas', titulo: 'Parcelas' },
-  { campo: 'observacao', titulo: 'Observação' },
-];
+import BotaoCadastrar from '../components/BotaoCadastrar/BotaoCadastrar';
+import ListagemAtendimentos from '../components/ListagemAtendimentos/ListagemAtendimentos';
+import TituloPagina from '../components/TituloPagina/TituloPagina';
+import './Atendimentos.css';
 
 export default function Atendimentos() {
-  return <Listagem titulo="Atendimentos" descricao="Consulte os horários e as informações dos atendimentos." carregar={listar} colunas={colunas} />;
+  const navigate = useNavigate();
+
+  function abrirRota(atendimento, sufixo = '') {
+    if (!atendimento._id) return;
+    navigate(`/atendimentos/${atendimento._id}${sufixo}`);
+  }
+
+  return (
+    <section className="pagina-atendimentos">
+      <div className="cabecalho-atendimentos">
+        <TituloPagina titulo="Atendimentos" descricao="Consulte os horários e as informações dos atendimentos." />
+        <BotaoCadastrar labelButton="Cadastrar atendimento" onClick={() => navigate('/atendimentos/novo')} />
+      </div>
+      <ListagemAtendimentos carregar={listar} onEditar={(atendimento) => abrirRota(atendimento, '/editar')} onVisualizar={abrirRota} />
+    </section>
+  );
 }
