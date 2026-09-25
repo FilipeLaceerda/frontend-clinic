@@ -1,10 +1,18 @@
 import { useState } from "react";
 
+import Listagem from "../components/Listagem";
 import FormDentista from "../components/dentistas/FormDentista";
-import ListagemDentistas from "../components/dentistas/ListagemDentistas";
 import { atualizar, criar, remover } from "../services/api";
 
 const RECURSO = "dentistas";
+
+const colunas = [
+  { campo: "nome", titulo: "Nome" },
+  { campo: "_id", titulo: "CPF" },
+  { campo: "CRO", titulo: "CRO" },
+  { campo: "croUF", titulo: "UF" },
+  { campo: "especialidade", titulo: "Especialidade" },
+];
 
 export default function Dentistas() {
   const [dentistaSelecionado, setDentistaSelecionado] = useState(null);
@@ -99,10 +107,22 @@ export default function Dentistas() {
         </p>
       )}
 
-      <ListagemDentistas
+      <Listagem
+        titulo="Dentistas"
+        descricao="Profissionais e especialidades da clínica."
+        recurso={RECURSO}
+        colunas={colunas}
         atualizacao={atualizacao}
-        onEditar={editarDentista}
-        onExcluir={excluirDentista}
+        renderAcoes={(dentista) => (
+          <div className="acoes">
+            <button type="button" onClick={() => editarDentista(dentista)}>
+              Editar
+            </button>
+            <button type="button" onClick={() => excluirDentista(dentista)}>
+              Excluir
+            </button>
+          </div>
+        )}
       />
     </>
   );
