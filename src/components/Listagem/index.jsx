@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Header from '../Header';
 import CampoBusca from '../CampoBusca';
 import Botao from '../Botao';
 import MensagemEstado from '../MensagemEstado';
@@ -23,16 +22,16 @@ function mensagemDoErro(error) {
 }
 
 export default function Listagem({
-  titulo,
-  descricao,
   carregar,
   colunas,
-  mostrarCabecalho = true,
+  tituloTabela = 'Lista',
   rotuloBusca = 'Buscar na lista',
   placeholderBusca = 'Digite para buscar…',
   buscarEm,
   filtrarDados,
   mensagemVazio = 'Nenhum registro encontrado.',
+  atualizacao = 0,
+  renderAcoes,
 }) {
   const [dados, setDados] = useState([]);
   const [busca, setBusca] = useState('');
@@ -55,14 +54,24 @@ export default function Listagem({
         if (!controller.signal.aborted) setCarregando(false);
       });
     return () => controller.abort();
-  }, [carregar, tentativa]);
+  }, [carregar, tentativa, atualizacao]);
 
+  const colunasTabela = renderAcoes
+    ? [
+        ...colunas,
+        {
+          campo: 'acoes',
+          titulo: 'Ações',
+          renderizar: renderAcoes,
+        },
+      ]
+    : colunas;
   const dadosFiltrados = filtrarDados ? filtrarDados(dados) : dados;
 
   const filtrados = dadosFiltrados.filter((item) => {
     const valores = buscarEm
       ? buscarEm(item)
-      : colunas
+      : colunasTabela
         .filter((coluna) => !coluna.renderizar)
         .map((coluna) => coluna.formatar ? coluna.formatar(item[coluna.campo]) : item[coluna.campo]);
 
@@ -71,7 +80,6 @@ export default function Listagem({
 
   return (
     <section className="listagem">
-      {mostrarCabecalho && <Header titulo={titulo} descricao={descricao} />}
       <div className="card">
         <div className="toolbar">
           <CampoBusca
@@ -100,7 +108,11 @@ export default function Listagem({
         ) : filtrados.length === 0 ? (
           <MensagemEstado>{mensagemVazio}</MensagemEstado>
         ) : (
-          <Tabela titulo={titulo} colunas={colunas} dados={filtrados} />
+          <Tabela
+            titulo={tituloTabela}
+            colunas={colunasTabela}
+            dados={filtrados}
+          />
         )}
       </div>
     </section>
