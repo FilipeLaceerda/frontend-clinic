@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import BarraLateral from './components/BarraLateral';
-import Home from '.pages/Home';
+import Home from './pages/Home';
 import Atendimentos from './pages/Atendimentos';
 import Dentistas from './pages/Dentistas';
 import Procedimentos from './pages/Procedimentos';
