@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AcoesTabela from "../components/AcoesTabela";
-import BotaoCadastrar from "../components/BotaoCadastrar/BotaoCadastrar";
+import Botao from '../components/Botao';
 import CabecalhoComAcao from "../components/CabecalhoComAcao";
 import { listar, atualizar, excluir } from "../services/secretariaService";
 
@@ -123,10 +123,11 @@ export default function Secretarias() {
         titulo="Secretárias"
         descricao="Equipe responsável pela recepção e pelos agendamentos."
         acao={
-          <BotaoCadastrar
-            labelButton="Cadastrar secretária"
+          <Botao
             onClick={() => navigate("/secretarias/novo")}
-          />
+          >
+            Cadastrar secretária
+          </Botao>
         }
       />
 

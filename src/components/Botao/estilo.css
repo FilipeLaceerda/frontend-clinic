@@ -16,13 +16,26 @@
   background: #edf2f2;
 }
 
+.botao-menu {
+  width: 100%;
+  padding: 9px 10px;
+  color: #203337;
+  background: transparent;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.botao-menu:hover {
+  background: #e2f2ee;
+}
+
 .botao:disabled {
   cursor: wait;
   opacity: 0.7;
 }
 
 @media (max-width: 640px) {
-  .botao {
+  .botao:not(.botao-menu) {
     width: 100%;
   }
 }
