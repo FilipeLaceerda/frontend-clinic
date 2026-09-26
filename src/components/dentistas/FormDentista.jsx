@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 
+import Botao from "../Botao";
+import CampoFormulario from "../CampoFormulario";
+import CampoInput from "../CampoInput";
+import { AcoesFormulario, CamposFormulario, Formulario } from "../Formulario";
+
 const formularioVazio = {
   _id: "",
   nome: "",
@@ -33,14 +38,15 @@ export default function FormDentista({
 
     const rascunho = localStorage.getItem("dentista-rascunho");
 
-    if (rascunho) {
-      try {
-        setFormulario(JSON.parse(rascunho));
-      } catch {
-        localStorage.removeItem("dentista-rascunho");
-        setFormulario(formularioVazio);
-      }
-    } else {
+    if (!rascunho) {
+      setFormulario(formularioVazio);
+      return;
+    }
+
+    try {
+      setFormulario(JSON.parse(rascunho));
+    } catch {
+      localStorage.removeItem("dentista-rascunho");
       setFormulario(formularioVazio);
     }
   }, [dentista]);
@@ -68,72 +74,71 @@ export default function FormDentista({
   }
 
   return (
-    <form className="card" onSubmit={enviar}>
-      <h2>{editando ? "Editar dentista" : "Novo dentista"}</h2>
+    <Formulario onSubmit={enviar}>
+      <CamposFormulario>
+        <CampoFormulario rotulo="Nome">
+          <CampoInput
+            required
+            name="nome"
+            value={formulario.nome}
+            onChange={alterarCampo}
+          />
+        </CampoFormulario>
 
-      <label>
-        Nome
-        <input
-          name="nome"
-          value={formulario.nome}
-          onChange={alterarCampo}
-          required
-        />
-      </label>
+        <CampoFormulario rotulo="CPF">
+          <CampoInput
+            required
+            name="_id"
+            inputMode="numeric"
+            pattern="[0-9]{11}"
+            value={formulario._id}
+            onChange={alterarCampo}
+            disabled={editando}
+          />
+        </CampoFormulario>
 
-      <label>
-        CPF
-        <input
-          name="_id"
-          value={formulario._id}
-          onChange={alterarCampo}
-          disabled={editando}
-          required
-        />
-      </label>
+        <CampoFormulario rotulo="CRO">
+          <CampoInput
+            required
+            name="CRO"
+            value={formulario.CRO}
+            onChange={alterarCampo}
+          />
+        </CampoFormulario>
 
-      <label>
-        CRO
-        <input
-          name="CRO"
-          value={formulario.CRO}
-          onChange={alterarCampo}
-          required
-        />
-      </label>
+        <CampoFormulario rotulo="UF">
+          <CampoInput
+            required
+            name="croUF"
+            maxLength={2}
+            value={formulario.croUF}
+            onChange={alterarCampo}
+          />
+        </CampoFormulario>
 
-      <label>
-        UF
-        <input
-          name="croUF"
-          value={formulario.croUF}
-          onChange={alterarCampo}
-          maxLength={2}
-          required
-        />
-      </label>
+        <CampoFormulario rotulo="Especialidade" largo>
+          <CampoInput
+            required
+            name="especialidade"
+            value={formulario.especialidade}
+            onChange={alterarCampo}
+          />
+        </CampoFormulario>
+      </CamposFormulario>
 
-      <label>
-        Especialidade
-        <input
-          name="especialidade"
-          value={formulario.especialidade}
-          onChange={alterarCampo}
-          required
-        />
-      </label>
+      <AcoesFormulario>
+        <Botao variante="secundario" onClick={onCancelar} type="button">
+          Cancelar
+        </Botao>
 
-      <div className="acoes">
-        <button type="submit" disabled={salvando}>
-          {salvando ? "Salvando..." : editando ? "Atualizar" : "Cadastrar"}
-        </button>
-
-        {editando && (
-          <button type="button" onClick={onCancelar}>
-            Cancelar
-          </button>
-        )}
-      </div>
-    </form>
+        <Botao type="submit" disabled={salvando}>
+          {salvando
+            ? "Salvando…"
+            : editando
+              ? "Salvar alterações"
+              : "Cadastrar dentista"}
+        </Botao>
+      </AcoesFormulario>
+    </Formulario>
   );
 }
