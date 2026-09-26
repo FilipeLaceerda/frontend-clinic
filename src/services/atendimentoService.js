@@ -10,6 +10,15 @@ export async function buscarPorId(id, signal) {
   return data.data;
 }
 
+export async function listarPorSecretaria(nome, signal) {
+  const { data } = await api.get('/atendimentos/por-secretaria', {
+    params: { nome },
+    signal,
+  });
+
+  return data.data;
+}
+
 export async function criar(dados) {
   const { data } = await api.post('/atendimentos', dados);
   return data.data;

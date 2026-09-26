@@ -6,6 +6,7 @@ import "./FormularioSecretaria.css";
 
 const vazio = {
   nome: "",
+  cpf: "",
 };
 
 export default function FormularioSecretaria() {
@@ -22,9 +23,10 @@ export default function FormularioSecretaria() {
   async function enviar(event) {
     event.preventDefault();
     const nome = dados.nome.trim();
+    const cpf = dados.cpf.trim();
 
-    if (!nome) {
-      setErro("Informe o nome da secretária.");
+    if (!nome || !/^\d{11}$/.test(cpf)) {
+      setErro("Informe o nome e o CPF da secretária com 11 dígitos.");
       return;
     }
 
@@ -32,7 +34,7 @@ export default function FormularioSecretaria() {
     setErro("");
 
     try {
-      await criar({ nome });
+      await criar({ nome, cpf });
       navigate("/secretarias");
     } catch (error) {
       setErro(
@@ -80,6 +82,28 @@ export default function FormularioSecretaria() {
               value={dados.nome}
               onChange={alterarCampo}
               placeholder="Digite o nome da secretária"
+              required
+            />
+          </label>
+
+          <label
+            style={{
+              display: "grid",
+              gap: "8px",
+              marginTop: "16px",
+              fontWeight: 600,
+              color: "#35515a",
+            }}
+          >
+            CPF
+            <input
+              type="text"
+              name="cpf"
+              inputMode="numeric"
+              pattern="[0-9]{11}"
+              value={dados.cpf}
+              onChange={alterarCampo}
+              placeholder="Somente os 11 dígitos"
               required
             />
           </label>

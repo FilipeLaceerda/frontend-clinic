@@ -50,6 +50,11 @@ const colunas = [
     formatar: (valor) => `#${valor}`,
   },
   { campo: 'fk_CPF_Paciente', titulo: 'CPF do paciente' },
+  {
+    campo: 'secretaria',
+    titulo: 'Secretária',
+    renderizar: (atendimento) => atendimento.secretaria?.nome || 'Não vinculada',
+  },
   { campo: 'status', titulo: 'Status', formatar: statusLegivel },
   { campo: 'observacao', titulo: 'Observação' },
 ];
@@ -92,10 +97,11 @@ export default function AgendaDoDia() {
         carregar={carregarAgenda}
         colunas={colunas}
         rotuloBusca="Buscar na agenda"
-        placeholderBusca="Atendimento, CPF, status ou observação"
+        placeholderBusca="Atendimento, CPF, secretária, status ou observação"
         buscarEm={(atendimento) => [
           atendimento.idAtendimento,
           atendimento.fk_CPF_Paciente,
+          atendimento.secretaria?.nome,
           atendimento.status,
           atendimento.observacao,
         ]}
