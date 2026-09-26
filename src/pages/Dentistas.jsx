@@ -106,7 +106,7 @@ export default function Dentistas() {
       <CabecalhoComAcao
         titulo="Dentistas"
         descricao="Profissionais e especialidades da clínica."
-        acao={<Botao onClick={novoDentista}>Novo dentista</Botao>}
+        acao={<Botao onClick={novoDentista}>Cadastrar dentista</Botao>}
       />
 
       {mostrarFormulario && (
