@@ -1,0 +1,17 @@
+.campo-formulario {
+  display: grid;
+  gap: 7px;
+  color: #374c51;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.campo-formulario-largo {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .campo-formulario-largo {
+    grid-column: auto;
+  }
+}

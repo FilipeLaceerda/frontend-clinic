@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import BarraLateral from './components/BarraLateral';
-import Atendimentos from './pages/Atendimentos';
+import Atendimentos from './pages/Atendimentos/Atendimentos';
+import FormularioAtendimento from './pages/FormularioAtendimento/FormularioAtendimento';
+import VisualizarAtendimento from './pages/VisualizarAtendimento/VisualizarAtendimento';
 import Dentistas from './pages/Dentistas';
 import Procedimentos from './pages/Procedimentos';
 import Secretarias from './pages/Secretarias';
@@ -17,6 +19,9 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/atendimentos" element={<Atendimentos />} />
+          <Route path="/atendimentos/novo" element={<FormularioAtendimento />} />
+          <Route path="/atendimentos/:id/editar" element={<FormularioAtendimento />} />
+          <Route path="/atendimentos/:id" element={<VisualizarAtendimento />} />
           <Route path="/dentistas" element={<Dentistas />} />
           <Route path="/procedimentos" element={<Procedimentos />} />
           <Route path="/secretarias" element={<Secretarias />} />

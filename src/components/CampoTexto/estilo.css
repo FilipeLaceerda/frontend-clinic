@@ -1,0 +1,9 @@
+.campo-texto {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #c9d5d7;
+  border-radius: 6px;
+  font: inherit;
+  resize: vertical;
+}

@@ -1,0 +1,28 @@
+.campo-select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #c9d5d7;
+  border-radius: 6px;
+  background: #fff;
+  color: #203337;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo-select:hover {
+  border-color: #8ca9a5;
+}
+
+.campo-select:focus {
+  border-color: #117468;
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(17 116 104 / 18%);
+}
+
+select option {
+  color: #333;
+  background-color: #f0f0f0;
+  font-size: 14px;
+}
