@@ -1,6 +1,0 @@
-.pagina-atendimentos { width: 100%; min-width: 0; }
-.cabecalho-atendimentos { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
-
-@media (max-width: 760px) {
-  .cabecalho-atendimentos { display: block; }
-}

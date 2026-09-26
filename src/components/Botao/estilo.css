@@ -1,0 +1,28 @@
+.botao {
+  border: 0;
+  border-radius: 6px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.botao-primario {
+  color: #fff;
+  background: #117468;
+}
+
+.botao-secundario {
+  color: #203337;
+  background: #edf2f2;
+}
+
+.botao:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .botao {
+    width: 100%;
+  }
+}

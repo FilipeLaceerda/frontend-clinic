@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import BarraLateral from './components/BarraLateral';
-import Atendimentos from './pages/Atendimentos';
-import FormularioAtendimento from './pages/FormularioAtendimento';
-import VisualizarAtendimento from './pages/VisualizarAtendimento';
+import Atendimentos from './pages/Atendimentos/Atendimentos';
+import FormularioAtendimento from './pages/FormularioAtendimento/FormularioAtendimento';
+import VisualizarAtendimento from './pages/VisualizarAtendimento/VisualizarAtendimento';
 import Dentistas from './pages/Dentistas';
 import Procedimentos from './pages/Procedimentos';
 import Secretarias from './pages/Secretarias';

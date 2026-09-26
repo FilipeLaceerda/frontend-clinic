@@ -1,2 +1,8 @@
-.listagem-atendimentos { width: 100%; }
-.status-atendimento { color: #126557; font-weight: 600; white-space: nowrap; }
+.listagem-atendimentos {
+  width: 100%;
+}
+.status-atendimento {
+  color: #126557;
+  font-weight: 600;
+  white-space: nowrap;
+}

@@ -1,7 +1,0 @@
-.pagina-visualizar-atendimento { width: 100%; max-width: 960px; }
-.dados-atendimento { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.dados-atendimento div { padding: 18px; background: #fff; border: 1px solid #dfe7e8; border-radius: 10px; }
-.dados-atendimento dt { color: #637579; font-size: 13px; font-weight: 600; }
-.dados-atendimento dd { margin: 8px 0 0; overflow-wrap: anywhere; }
-.acoes-visualizacao { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
-@media (max-width: 640px) { .dados-atendimento { grid-template-columns: 1fr; } .acoes-visualizacao { flex-direction: column-reverse; } .acoes-visualizacao button { width: 100%; } }

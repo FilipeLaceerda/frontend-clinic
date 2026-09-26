@@ -1,0 +1,14 @@
+.mensagem-estado {
+  padding: 24px;
+  color: #53696e;
+}
+
+.mensagem-estado p {
+  margin: 0;
+}
+
+.mensagem-estado-erro {
+  color: #9a2335;
+  background: #fdecef;
+  border-radius: 6px;
+}
