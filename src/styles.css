@@ -15,8 +15,6 @@ a {
   text-decoration: none;
 }
 .layout {
-  width: 100%;
-  min-width: 0;
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr);
   min-height: 100vh;
@@ -88,15 +86,15 @@ header p {
 .listagem header,
 .notice {
   overflow-wrap: anywhere;
-}
+}  
 .card {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
   background: white;
   border: 1px solid #dfe7e8;
   border-radius: 12px;
   overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 .toolbar {
   flex-wrap: wrap;
@@ -144,6 +142,7 @@ input {
 }
 .table-scroll:focus-visible {
   outline-offset: -3px;
+  overflow-x: auto;
 }
 table {
   border-collapse: collapse;
@@ -185,6 +184,50 @@ button {
   cursor: pointer;
   font: inherit;
 }
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 8px;
+  background: #edf5f4;
+  color: #117468;
+}
+.icon-button svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.icon-button.edit {
+  background: #eaf9f2;
+}
+.icon-button.delete {
+  background: #fdeceb;
+  color: #b63b35;
+}
+.icon-button.secondary {
+  background: #eef3f4;
+  color: #35515a;
+}
+.icon-button.success {
+  background: #117468;
+  color: white;
+  width: auto;
+  padding: 8px 12px;
+}
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.actions-column {
+  width: 140px;
+}
+.inline-input {
+  min-width: 220px;
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -197,6 +240,7 @@ button {
 @media (max-width: 760px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: 1fr;
   }
   aside {
     border-right: 0;
@@ -229,5 +273,7 @@ button {
   th,
   td {
     padding: 12px 14px;
+    align-items: start;
+    flex-direction: column;
   }
 }
