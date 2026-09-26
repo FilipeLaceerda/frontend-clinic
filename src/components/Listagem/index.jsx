@@ -31,6 +31,8 @@ export default function Listagem({
   rotuloBusca = 'Buscar na lista',
   placeholderBusca = 'Digite para buscar…',
   buscarEm,
+  filtrarDados,
+  mensagemVazio = 'Nenhum registro encontrado.',
 }) {
   const [dados, setDados] = useState([]);
   const [busca, setBusca] = useState('');
@@ -55,7 +57,9 @@ export default function Listagem({
     return () => controller.abort();
   }, [carregar, tentativa]);
 
-  const filtrados = dados.filter((item) => {
+  const dadosFiltrados = filtrarDados ? filtrarDados(dados) : dados;
+
+  const filtrados = dadosFiltrados.filter((item) => {
     const valores = buscarEm
       ? buscarEm(item)
       : colunas
@@ -94,7 +98,7 @@ export default function Listagem({
             {erro}
           </MensagemEstado>
         ) : filtrados.length === 0 ? (
-          <MensagemEstado>Nenhum registro encontrado.</MensagemEstado>
+          <MensagemEstado>{mensagemVazio}</MensagemEstado>
         ) : (
           <Tabela titulo={titulo} colunas={colunas} dados={filtrados} />
         )}

@@ -1,5 +1,5 @@
-import Header from '../Header';
-import './estilo.css';
+import Header from "../Header";
+import "./estilo.css";
 
 export default function CabecalhoComAcao({ titulo, descricao, acao }) {
   return (
