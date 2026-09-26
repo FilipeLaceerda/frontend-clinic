@@ -1,10 +1,22 @@
 import { useNavigate } from 'react-router-dom';
+import Botao from '../../components/Botao';
 import CabecalhoComAcao from '../../components/CabecalhoComAcao';
-import BotaoCadastrar from '../../components/BotaoCadastrar/BotaoCadastrar';
-import ListagemAtendimentos from '../../components/ListagemAtendimentos/ListagemAtendimentos';
+import Listagem from '../../components/Listagem';
+import MaisAcoes from '../../components/MaisAcoes/MaisAcoes';
 import Pagina from '../../components/Pagina';
 import { listar } from '../../services/atendimentoService';
+import { dataBR } from '../../utils/formatadores';
 import './Atendimentos.css';
+
+const statusLegivel = (valor) =>
+  ({
+    AGENDADO: 'Agendado',
+    CANCELADO: 'Cancelado',
+    CONCLUIDO: 'Concluído',
+    CONCLUÍDO: 'Concluído',
+  })[valor] || valor || '—';
+
+const horario = (valor) => (valor ? valor.slice(0, 5) : '—');
 
 export default function Atendimentos() {
   const navigate = useNavigate();
@@ -14,22 +26,64 @@ export default function Atendimentos() {
     navigate(`/atendimentos/${atendimento._id}${sufixo}`);
   }
 
+  const colunas = [
+    {
+      campo: 'idAtendimento',
+      titulo: 'Número',
+      formatar: (valor) => `#${valor}`,
+    },
+    {
+      campo: 'data',
+      titulo: 'Data e horário',
+      renderizar: (atendimento) => (
+        <>
+          {dataBR(atendimento.data)} · {horario(atendimento.horario_inicio)}–
+          {horario(atendimento.horario_fim)}
+        </>
+      ),
+    },
+    { campo: 'fk_CPF_Paciente', titulo: 'CPF do paciente' },
+    { campo: 'status', titulo: 'Status', formatar: statusLegivel },
+    {
+      campo: 'acoes',
+      titulo: 'Ações',
+      renderizar: (atendimento) => (
+        <MaisAcoes
+          atendimento={atendimento}
+          onEditar={(item) => abrirRota(item, '/editar')}
+          onVisualizar={abrirRota}
+        />
+      ),
+    },
+  ];
+
   return (
     <Pagina className="pagina-atendimentos">
       <CabecalhoComAcao
         titulo="Atendimentos"
         descricao="Consulte os horários e as informações dos atendimentos."
         acao={
-          <BotaoCadastrar
-            labelButton="Cadastrar atendimento"
+          <Botao
             onClick={() => navigate('/atendimentos/novo')}
-          />
+          >
+            Cadastrar atendimento
+          </Botao>
         }
       />
-      <ListagemAtendimentos
+      <Listagem
+        titulo="Atendimentos"
+        descricao=""
         carregar={listar}
-        onEditar={(atendimento) => abrirRota(atendimento, '/editar')}
-        onVisualizar={abrirRota}
+        colunas={colunas}
+        mostrarCabecalho={false}
+        rotuloBusca="Buscar atendimento"
+        placeholderBusca="Número, CPF, status ou observação"
+        buscarEm={(atendimento) => [
+          atendimento.idAtendimento,
+          atendimento.fk_CPF_Paciente,
+          atendimento.observacao,
+          statusLegivel(atendimento.status),
+        ]}
       />
     </Pagina>
   );

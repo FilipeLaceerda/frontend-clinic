@@ -1,8 +1,13 @@
 import './estilo.css';
 
-export default function Tabela({ titulo, colunas, dados }) {
+export default function Tabela({ titulo, colunas, dados, ariaLabel }) {
   return (
-    <div className="table-scroll" tabIndex={0} role="region" aria-label={`Lista de ${titulo.toLowerCase()}`}>
+    <div
+      className="table-scroll"
+      tabIndex={0}
+      role="region"
+      aria-label={ariaLabel || `Lista de ${titulo.toLowerCase()}`}
+    >
       <table>
         <caption className="sr-only">{titulo}</caption>
         <thead>
@@ -17,7 +22,11 @@ export default function Tabela({ titulo, colunas, dados }) {
             <tr key={item._id || item.idAtendimento || item.idProcedimento || item.id || index}>
               {colunas.map((coluna) => (
                 <td key={coluna.campo}>
-                  {coluna.formatar ? coluna.formatar(item[coluna.campo]) : (item[coluna.campo] ?? '—')}
+                  {coluna.renderizar
+                    ? coluna.renderizar(item)
+                    : coluna.formatar
+                      ? coluna.formatar(item[coluna.campo])
+                      : (item[coluna.campo] ?? '—')}
                 </td>
               ))}
             </tr>
