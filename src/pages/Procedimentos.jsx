@@ -9,12 +9,15 @@ import CampoBusca from '../components/CampoBusca';
 import Tabela from '../components/Tabela';
 import AcoesTabela from '../components/AcoesTabela';
 import ConfirmacaoExclusao from '../components/ConfirmacaoExclusao';
+import MensagemEstado from '../components/MensagemEstado';
 import Pagina from '../components/Pagina';
 
 export default function Procedimentos() {
   const navigate = useNavigate();
   const [procedimentos, setProcedimentos] = useState([]);
   const [busca, setBusca] = useState('');
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState('');
   const [processandoId, setProcessandoId] = useState(null);
   const [procedimentoParaExcluir, setProcedimentoParaExcluir] = useState(null);
   const [erroExclusao, setErroExclusao] = useState('');
@@ -74,12 +77,29 @@ export default function Procedimentos() {
   ];
 
   useEffect(() => {
-    async function carregarProcedimentos() {
-      const lista = await listar();
-      setProcedimentos(lista);
-    }
+    const controller = new AbortController();
+    setCarregando(true);
+    setErro('');
 
-    carregarProcedimentos();
+    listar({}, controller.signal)
+      .then((lista) => {
+        if (!controller.signal.aborted) setProcedimentos(lista);
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) {
+          setErro(
+            error.response?.data?.error ||
+              error.response?.data?.mensagem ||
+              error.response?.data?.message ||
+              'Não foi possível carregar os procedimentos.',
+          );
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setCarregando(false);
+      });
+
+    return () => controller.abort();
   }, []);
 
   const procedimentosFiltrados = procedimentos.filter((procedimento) =>
@@ -110,11 +130,17 @@ export default function Procedimentos() {
           />
         </div>
 
-        <Tabela
-          titulo="Procedimentos"
-          colunas={colunas}
-          dados={procedimentosFiltrados}
-        />
+        {carregando ? (
+          <MensagemEstado>Carregando dados…</MensagemEstado>
+        ) : erro ? (
+          <MensagemEstado tipo="erro">{erro}</MensagemEstado>
+        ) : (
+          <Tabela
+            titulo="Procedimentos"
+            colunas={colunas}
+            dados={procedimentosFiltrados}
+          />
+        )}
       </div>
       {procedimentoParaExcluir && (
         <ConfirmacaoExclusao

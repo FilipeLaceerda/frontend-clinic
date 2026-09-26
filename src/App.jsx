@@ -49,6 +49,7 @@ export default function App() {
           />
           <Route path="/secretarias" element={<Secretarias />} />
           <Route path="/secretarias/novo" element={<FormularioSecretaria />} />
+          <Route path="/secretarias/:id/editar" element={<FormularioSecretaria />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

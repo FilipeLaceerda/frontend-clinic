@@ -1,19 +1,58 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
-import { criar } from "../../services/secretariaService";
-import "./FormularioSecretaria.css";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Botao from '../../components/Botao';
+import CampoFormulario from '../../components/CampoFormulario';
+import CampoInput from '../../components/CampoInput';
+import { AcoesFormulario, CamposFormulario, Formulario } from '../../components/Formulario';
+import Header from '../../components/Header';
+import MensagemEstado from '../../components/MensagemEstado';
+import Pagina from '../../components/Pagina';
+import { atualizar, buscarPorId, criar } from '../../services/secretariaService';
 
-const vazio = {
-  nome: "",
-  cpf: "",
-};
+const vazio = { nome: '', cpf: '' };
+
+function mensagemDoErro(error, padrao) {
+  return (
+    error.response?.data?.error ||
+    error.response?.data?.mensagem ||
+    error.response?.data?.message ||
+    padrao
+  );
+}
 
 export default function FormularioSecretaria() {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const editando = Boolean(id);
   const [dados, setDados] = useState(vazio);
+  const [carregando, setCarregando] = useState(editando);
   const [salvando, setSalvando] = useState(false);
-  const [erro, setErro] = useState("");
+  const [erro, setErro] = useState('');
+
+  useEffect(() => {
+    if (!editando) return undefined;
+
+    const controller = new AbortController();
+    setCarregando(true);
+    setErro('');
+
+    buscarPorId(id, controller.signal)
+      .then((secretaria) => {
+        if (!controller.signal.aborted) {
+          setDados({ nome: secretaria.nome || '', cpf: secretaria.cpf || '' });
+        }
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) {
+          setErro(mensagemDoErro(error, 'Não foi possível carregar a secretária.'));
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setCarregando(false);
+      });
+
+    return () => controller.abort();
+  }, [editando, id]);
 
   function alterarCampo(event) {
     const { name, value } = event.target;
@@ -26,106 +65,71 @@ export default function FormularioSecretaria() {
     const cpf = dados.cpf.trim();
 
     if (!nome || !/^\d{11}$/.test(cpf)) {
-      setErro("Informe o nome e o CPF da secretária com 11 dígitos.");
+      setErro('Informe o nome e o CPF da secretária com 11 dígitos.');
       return;
     }
 
-    setSalvando(true);
-    setErro("");
-
     try {
-      await criar({ nome, cpf });
-      navigate("/secretarias");
+      setSalvando(true);
+      setErro('');
+      if (editando) {
+        await atualizar(id, { nome, cpf });
+      } else {
+        await criar({ nome, cpf });
+      }
+      navigate('/secretarias');
     } catch (error) {
-      setErro(
-        error.response?.data?.error ||
-          error.response?.data?.mensagem ||
-          error.response?.data?.message ||
-          "Não foi possível cadastrar a secretária.",
-      );
+      setErro(mensagemDoErro(error, 'Não foi possível salvar a secretária.'));
     } finally {
       setSalvando(false);
     }
   }
 
   return (
-    <section>
+    <Pagina>
       <Header
-        titulo="Cadastrar secretária"
-        descricao="Preencha os dados para incluir uma nova secretária na clínica."
+        titulo={editando ? 'Editar secretária' : 'Cadastrar secretária'}
+        descricao="Informe os dados da secretária da clínica."
       />
 
-      <div className="card">
-        <form onSubmit={enviar} style={{ padding: "24px" }}>
-          {erro && (
-            <p
-              className="notice"
-              role="alert"
-              style={{ padding: 0, marginBottom: "16px" }}
-            >
-              {erro}
-            </p>
-          )}
+      {erro && <MensagemEstado tipo="erro">{erro}</MensagemEstado>}
 
-          <label
-            style={{
-              display: "grid",
-              gap: "8px",
-              fontWeight: 600,
-              color: "#35515a",
-            }}
-          >
-            Nome
-            <input
-              type="text"
-              name="nome"
-              value={dados.nome}
-              onChange={alterarCampo}
-              placeholder="Digite o nome da secretária"
-              required
-            />
-          </label>
+      {!carregando && (
+        <Formulario onSubmit={enviar}>
+          <CamposFormulario>
+            <CampoFormulario rotulo="Nome">
+              <CampoInput
+                name="nome"
+                value={dados.nome}
+                onChange={alterarCampo}
+                placeholder="Digite o nome da secretária"
+                required
+              />
+            </CampoFormulario>
 
-          <label
-            style={{
-              display: "grid",
-              gap: "8px",
-              marginTop: "16px",
-              fontWeight: 600,
-              color: "#35515a",
-            }}
-          >
-            CPF
-            <input
-              type="text"
-              name="cpf"
-              inputMode="numeric"
-              pattern="[0-9]{11}"
-              value={dados.cpf}
-              onChange={alterarCampo}
-              placeholder="Somente os 11 dígitos"
-              required
-            />
-          </label>
+            <CampoFormulario rotulo="CPF">
+              <CampoInput
+                name="cpf"
+                inputMode="numeric"
+                pattern="[0-9]{11}"
+                value={dados.cpf}
+                onChange={alterarCampo}
+                placeholder="Somente os 11 dígitos"
+                required
+              />
+            </CampoFormulario>
+          </CamposFormulario>
 
-          <div className="formulario-secretaria__acoes">
-            <button
-              type="submit"
-              className="formulario-secretaria__botao"
-              disabled={salvando}
-            >
-              {salvando ? "Salvando..." : "Salvar secretária"}
-            </button>
-            <button
-              type="button"
-              className="formulario-secretaria__botao-cancelar"
-              onClick={() => navigate("/secretarias")}
-            >
+          <AcoesFormulario>
+            <Botao variante="secundario" onClick={() => navigate('/secretarias')}>
               Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
+            </Botao>
+            <Botao type="submit" disabled={salvando}>
+              {salvando ? 'Salvando...' : 'Salvar secretária'}
+            </Botao>
+          </AcoesFormulario>
+        </Formulario>
+      )}
+    </Pagina>
   );
 }
