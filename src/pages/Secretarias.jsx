@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AcoesTabela from "../components/AcoesTabela";
+import ConfirmacaoExclusao from "../components/ConfirmacaoExclusao";
 import Botao from '../components/Botao';
 import CabecalhoComAcao from "../components/CabecalhoComAcao";
 import { listar, atualizar, excluir } from "../services/secretariaService";
@@ -20,6 +21,8 @@ export default function Secretarias() {
   const [editandoId, setEditandoId] = useState(null);
   const [valorEditado, setValorEditado] = useState("");
   const [processandoId, setProcessandoId] = useState(null);
+  const [secretariaParaExcluir, setSecretariaParaExcluir] = useState(null);
+  const [erroExclusao, setErroExclusao] = useState('');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -89,12 +92,10 @@ export default function Secretarias() {
     }
   };
 
-  const handleExcluir = async (item) => {
-    const nome = item.nome || "esta secretária";
-
-    if (!window.confirm(`Deseja realmente excluir ${nome}?`)) {
-      return;
-    }
+  const handleExcluir = async () => {
+    const item = secretariaParaExcluir;
+    if (processandoId !== null || !item?._id) return;
+    setErroExclusao('');
 
     try {
       setProcessandoId(item._id);
@@ -105,8 +106,9 @@ export default function Secretarias() {
       if (editandoId === item._id) {
         cancelarEdicao();
       }
+      setSecretariaParaExcluir(null);
     } catch (error) {
-      alert(
+      setErroExclusao(
         error.response?.data?.error ||
           error.response?.data?.mensagem ||
           error.response?.data?.message ||
@@ -211,7 +213,11 @@ export default function Secretarias() {
                           onEditar={() => abrirEdicao(item)}
                           onSalvar={() => handleSalvar(item._id)}
                           onCancelar={cancelarEdicao}
-                          onExcluir={() => handleExcluir(item)}
+                          onExcluir={() => {
+                            if (processandoId !== null) return;
+                            setErroExclusao('');
+                            setSecretariaParaExcluir(item);
+                          }}
                           processandoId={processandoId}
                         />
                       </td>
@@ -223,6 +229,15 @@ export default function Secretarias() {
           </div>
         )}
       </div>
+      {secretariaParaExcluir && (
+        <ConfirmacaoExclusao
+          nomeItem={secretariaParaExcluir.nome || 'esta secretária'}
+          processando={processandoId !== null}
+          erro={erroExclusao}
+          onCancelar={() => setSecretariaParaExcluir(null)}
+          onConfirmar={handleExcluir}
+        />
+      )}
     </section>
   );
 }

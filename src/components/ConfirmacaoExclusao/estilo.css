@@ -1,0 +1,45 @@
+.confirmacao-exclusao {
+  box-sizing: border-box;
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 24px;
+  overflow-y: auto;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+  color: #203337;
+  box-shadow: 0 16px 48px #0003;
+}
+
+.confirmacao-exclusao::backdrop {
+  background: #10262999;
+}
+
+.confirmacao-exclusao h2 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+}
+
+.confirmacao-exclusao p {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.confirmacao-exclusao__acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.confirmacao-exclusao__confirmar {
+  color: #fff;
+  background: #b63b35;
+}
+
+@media (max-width: 640px) {
+  .confirmacao-exclusao__acoes {
+    flex-direction: column;
+  }
+}

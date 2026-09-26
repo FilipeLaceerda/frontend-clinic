@@ -1,22 +1,76 @@
 import { useState, useEffect } from 'react';
-import { listar } from '../services/procedimentoService';
+import { useNavigate } from 'react-router-dom';
+import { listar, excluir } from '../services/procedimentoService';
 import { moeda } from '../utils/formatadores';
 
-import Header from '../components/Header';
+import Botao from '../components/Botao';
+import CabecalhoComAcao from '../components/CabecalhoComAcao';
 import CampoBusca from '../components/CampoBusca';
 import Tabela from '../components/Tabela';
-
-
-const colunas = [
-  { campo: 'nome', titulo: 'Nome' },
-  { campo: 'descricao', titulo: 'Descrição' },
-  { campo: 'tipoProcedimento', titulo: 'Tipo' },
-  { campo: 'valor', titulo: 'Valor', formatar: moeda },
-];
+import AcoesTabela from '../components/AcoesTabela';
+import ConfirmacaoExclusao from '../components/ConfirmacaoExclusao';
 
 export default function Procedimentos() {
+  const navigate = useNavigate();
   const [procedimentos, setProcedimentos] = useState([]);
   const [busca, setBusca] = useState('');
+  const [processandoId, setProcessandoId] = useState(null);
+  const [procedimentoParaExcluir, setProcedimentoParaExcluir] = useState(null);
+  const [erroExclusao, setErroExclusao] = useState('');
+
+  function abrirEdicao(procedimento) {
+    if (processandoId !== null || !procedimento._id) return;
+    navigate(`/procedimentos/${procedimento._id}/editar`);
+  }
+
+  async function handleExcluir() {
+    const procedimento = procedimentoParaExcluir;
+    if (processandoId !== null || !procedimento?._id) return;
+    setErroExclusao('');
+
+    try {
+      setProcessandoId(procedimento._id);
+      await excluir(procedimento._id);
+      setProcedimentos((lista) =>
+        lista.filter((item) => item._id !== procedimento._id),
+      );
+      setProcedimentoParaExcluir(null);
+    } catch (error) {
+      setErroExclusao(
+        error.response?.data?.error ||
+          error.response?.data?.mensagem ||
+          error.response?.data?.message ||
+          'Não foi possível excluir o procedimento.',
+      );
+    } finally {
+      setProcessandoId(null);
+    }
+  }
+
+  const colunas = [
+    { campo: 'nome', titulo: 'Nome' },
+    { campo: 'descricao', titulo: 'Descrição' },
+    { campo: 'tipoProcedimento', titulo: 'Tipo' },
+    { campo: 'valor', titulo: 'Valor', formatar: moeda },
+    {
+      campo: 'acoes',
+      titulo: 'Ações',
+      renderizar: (procedimento) => (
+        <div className="table-actions">
+          <AcoesTabela
+            item={procedimento}
+            onEditar={() => abrirEdicao(procedimento)}
+            onExcluir={() => {
+              setErroExclusao('');
+              setProcedimentoParaExcluir(procedimento);
+            }}
+            processandoId={processandoId}
+            disabled={processandoId !== null || !procedimento._id}
+          />
+        </div>
+      ),
+    },
+  ];
 
   useEffect(() => {
     async function carregarProcedimentos() {
@@ -35,9 +89,14 @@ export default function Procedimentos() {
 
   return (
     <section>
-      <Header
+      <CabecalhoComAcao
         titulo="Procedimentos"
         descricao="Consulte os procedimentos oferecidos e seus valores."
+        acao={
+          <Botao onClick={() => navigate('/procedimentos/novo')}>
+            Cadastrar procedimento
+          </Botao>
+        }
       />
 
       <div className="card">
@@ -56,6 +115,15 @@ export default function Procedimentos() {
           dados={procedimentosFiltrados}
         />
       </div>
+      {procedimentoParaExcluir && (
+        <ConfirmacaoExclusao
+          nomeItem={procedimentoParaExcluir.nome || 'este procedimento'}
+          processando={processandoId !== null}
+          erro={erroExclusao}
+          onCancelar={() => setProcedimentoParaExcluir(null)}
+          onConfirmar={handleExcluir}
+        />
+      )}
     </section>
   );
 }

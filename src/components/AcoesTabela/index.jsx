@@ -35,6 +35,7 @@ export default function AcoesTabela({
   onCancelar,
   onExcluir,
   processandoId,
+  disabled = false,
 }) {
   if (emEdicao) {
     return (
@@ -67,6 +68,7 @@ export default function AcoesTabela({
         label={`Alterar ${item.nome}`}
         titulo="Alterar"
         onClick={onEditar}
+        disabled={disabled}
       >
         <img src={editIcon} alt="" className="icon" />
       </BotaoIcone>
@@ -76,7 +78,7 @@ export default function AcoesTabela({
         label={`Excluir ${item.nome}`}
         titulo="Excluir"
         onClick={onExcluir}
-        disabled={processandoId === item._id}
+        disabled={disabled || processandoId === item._id}
       >
         <img src={deleteIcon} alt="" className="icon" />
       </BotaoIcone>
