@@ -18,6 +18,23 @@ export default function Procedimentos() {
   const [procedimentos, setProcedimentos] = useState([]);
   const [busca, setBusca] = useState('');
 
+  function normalizar(valor) {
+    return String(valor ?? '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  }
+
+  const procedimentosFiltrados = procedimentos.filter((procedimento) =>
+    colunas.some((coluna) => {
+      const valor = coluna.formatar
+        ? coluna.formatar(procedimento[coluna.campo])
+        : procedimento[coluna.campo];
+
+      return normalizar(valor).includes(normalizar(busca.trim()));
+    })
+  );
+
   return (
     <section>
       <Header
