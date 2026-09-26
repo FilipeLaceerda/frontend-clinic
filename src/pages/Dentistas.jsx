@@ -40,6 +40,7 @@ export default function Dentistas() {
   function cancelarFormulario() {
     setDentistaSelecionado(null);
     setMostrarFormulario(false);
+    // localStorage.removeItem("dentista-rascunho");
   }
 
   async function salvarDentista(dados) {
