@@ -18,21 +18,19 @@ export default function Procedimentos() {
   const [procedimentos, setProcedimentos] = useState([]);
   const [busca, setBusca] = useState('');
 
-  function normalizar(valor) {
-    return String(valor ?? '')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase();
-  }
+  useEffect(() => {
+    async function carregarProcedimentos() {
+      const lista = await listar();
+      setProcedimentos(lista);
+    }
+
+    carregarProcedimentos();
+  }, []);
 
   const procedimentosFiltrados = procedimentos.filter((procedimento) =>
-    colunas.some((coluna) => {
-      const valor = coluna.formatar
-        ? coluna.formatar(procedimento[coluna.campo])
-        : procedimento[coluna.campo];
-
-      return normalizar(valor).includes(normalizar(busca.trim()));
-    })
+    String(procedimento.nome ?? '')
+      .toLowerCase()
+      .includes(busca.toLowerCase())
   );
 
   return (
@@ -55,7 +53,7 @@ export default function Procedimentos() {
         <Tabela
           titulo="Procedimentos"
           colunas={colunas}
-          dados={procedimentos}
+          dados={procedimentosFiltrados}
         />
       </div>
     </section>
