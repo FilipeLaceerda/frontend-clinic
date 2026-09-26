@@ -9,6 +9,7 @@ import Dentistas from "./pages/Dentistas";
 import Procedimentos from "./pages/Procedimentos";
 import Secretarias from "./pages/Secretarias";
 import FormularioSecretaria from "./pages/FormularioSecretaria/FormularioSecretaria";
+import FormularioProcedimento from './pages/FormularioProcedimento/FormularioProcedimento';
 
 const paginas = [
   ['/', 'Agenda'],
@@ -37,6 +38,15 @@ export default function App() {
           <Route path="/atendimentos/:id" element={<VisualizarAtendimento />} />
           <Route path="/dentistas" element={<Dentistas />} />
           <Route path="/procedimentos" element={<Procedimentos />} />
+          <Route
+            path="/procedimentos/novo"
+            element={<FormularioProcedimento />}
+          />
+
+          <Route
+            path="/procedimentos/:id/editar"
+            element={<FormularioProcedimento />}
+          />
           <Route path="/secretarias" element={<Secretarias />} />
           <Route path="/secretarias/novo" element={<FormularioSecretaria />} />
           <Route path="*" element={<Navigate to="/" replace />} />

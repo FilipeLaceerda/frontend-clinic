@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import AcoesTabela from '../../components/AcoesTabela';
 import Botao from '../../components/Botao';
 import CabecalhoComAcao from '../../components/CabecalhoComAcao';
-import Listagem from '../../components/Listagem';
+import Listagem from '../../components/Listagem/index';
 import Pagina from '../../components/Pagina';
 import { listar } from '../../services/atendimentoService';
 import { dataBR } from '../../utils/formatadores';

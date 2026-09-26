@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import CabecalhoComAcao from '../CabecalhoComAcao';
 import CampoFormulario from '../CampoFormulario';
 import CampoInput from '../CampoInput';
-import Listagem from '../Listagem';
+import Listagem from '../Listagem/index';
 import { listar } from '../../services/atendimentoService';
 import { dataBR } from '../../utils/formatadores';
 

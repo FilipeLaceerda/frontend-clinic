@@ -52,6 +52,7 @@ export default function AcoesTabela({
   onExcluir,
   onVisualizar,
   processandoId,
+  disabled = false,
 }) {
   const descricao = item.nome || `atendimento ${item.idAtendimento}`;
   if (emEdicao) {
@@ -90,6 +91,7 @@ export default function AcoesTabela({
           label={`Alterar ${descricao}`}
           titulo="Alterar"
           onClick={onEditar}
+          disabled={disabled}
         >
           <img src={editIcon} alt="" className="icon" />
         </BotaoIcone>
@@ -101,7 +103,7 @@ export default function AcoesTabela({
           label={`Excluir ${descricao}`}
           titulo="Excluir"
           onClick={onExcluir}
-          disabled={processandoId === item._id}
+          disabled={disabled || processandoId === item._id}
         >
           <img src={deleteIcon} alt="" className="icon" />
         </BotaoIcone>
