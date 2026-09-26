@@ -9,6 +9,7 @@ import CampoBusca from '../components/CampoBusca';
 import Tabela from '../components/Tabela';
 import AcoesTabela from '../components/AcoesTabela';
 import ConfirmacaoExclusao from '../components/ConfirmacaoExclusao';
+import Pagina from '../components/Pagina';
 
 export default function Procedimentos() {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ export default function Procedimentos() {
   );
 
   return (
-    <section>
+    <Pagina>
       <CabecalhoComAcao
         titulo="Procedimentos"
         descricao="Consulte os procedimentos oferecidos e seus valores."
@@ -124,6 +125,6 @@ export default function Procedimentos() {
           onConfirmar={handleExcluir}
         />
       )}
-    </section>
+    </Pagina>
   );
 }

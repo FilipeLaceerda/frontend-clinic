@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import AcoesTabela from '../../components/AcoesTabela';
 import Botao from '../../components/Botao';
 import CabecalhoComAcao from '../../components/CabecalhoComAcao';
-import Listagem from '../../components/Listagem';
-import MaisAcoes from '../../components/MaisAcoes/MaisAcoes';
+import Listagem from '../../components/Listagem/index';
 import Pagina from '../../components/Pagina';
 import { listar } from '../../services/atendimentoService';
 import { dataBR } from '../../utils/formatadores';
@@ -44,17 +44,6 @@ export default function Atendimentos() {
     },
     { campo: 'fk_CPF_Paciente', titulo: 'CPF do paciente' },
     { campo: 'status', titulo: 'Status', formatar: statusLegivel },
-    {
-      campo: 'acoes',
-      titulo: 'Ações',
-      renderizar: (atendimento) => (
-        <MaisAcoes
-          atendimento={atendimento}
-          onEditar={(item) => abrirRota(item, '/editar')}
-          onVisualizar={abrirRota}
-        />
-      ),
-    },
   ];
 
   return (
@@ -71,11 +60,18 @@ export default function Atendimentos() {
         }
       />
       <Listagem
-        titulo="Atendimentos"
-        descricao=""
+        tituloTabela="Atendimentos"
         carregar={listar}
         colunas={colunas}
-        mostrarCabecalho={false}
+        renderAcoes={(atendimento) => (
+          <div className="table-actions">
+            <AcoesTabela
+              item={atendimento}
+              onVisualizar={() => abrirRota(atendimento)}
+              onEditar={() => abrirRota(atendimento, '/editar')}
+            />
+          </div>
+        )}
         rotuloBusca="Buscar atendimento"
         placeholderBusca="Número, CPF, status ou observação"
         buscarEm={(atendimento) => [

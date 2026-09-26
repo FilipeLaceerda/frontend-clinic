@@ -1,5 +1,6 @@
 import editIcon from "../../assets/modify.svg";
 import deleteIcon from "../../assets/delete.svg";
+import viewIcon from '../../assets/view.svg';
 import "./estilo.css";
 
 export function BotaoIcone({
@@ -25,6 +26,21 @@ export function BotaoIcone({
   );
 }
 
+export function BotaoVisualizarMais({ item, onClick }) {
+  const descricao = item.nome || `atendimento ${item.idAtendimento}`;
+
+  return (
+    <BotaoIcone
+      variante="view"
+      label={`Visualizar ${descricao}`}
+      titulo="Visualizar mais"
+      onClick={onClick}
+    >
+      <img src={viewIcon} alt="" className="icon" />
+    </BotaoIcone>
+  );
+}
+
 export default function AcoesTabela({
   item,
   emEdicao,
@@ -34,9 +50,11 @@ export default function AcoesTabela({
   onSalvar,
   onCancelar,
   onExcluir,
+  onVisualizar,
   processandoId,
   disabled = false,
 }) {
+  const descricao = item.nome || `atendimento ${item.idAtendimento}`;
   if (emEdicao) {
     return (
       <>
@@ -63,25 +81,33 @@ export default function AcoesTabela({
 
   return (
     <>
-      <BotaoIcone
-        variante="edit"
-        label={`Alterar ${item.nome}`}
-        titulo="Alterar"
-        onClick={onEditar}
-        disabled={disabled}
-      >
-        <img src={editIcon} alt="" className="icon" />
-      </BotaoIcone>
+      {onVisualizar && (
+        <BotaoVisualizarMais item={item} onClick={onVisualizar} />
+      )}
 
-      <BotaoIcone
-        variante="delete"
-        label={`Excluir ${item.nome}`}
-        titulo="Excluir"
-        onClick={onExcluir}
-        disabled={disabled || processandoId === item._id}
-      >
-        <img src={deleteIcon} alt="" className="icon" />
-      </BotaoIcone>
+      {onEditar && (
+        <BotaoIcone
+          variante="edit"
+          label={`Alterar ${descricao}`}
+          titulo="Alterar"
+          onClick={onEditar}
+          disabled={disabled}
+        >
+          <img src={editIcon} alt="" className="icon" />
+        </BotaoIcone>
+      )}
+
+      {onExcluir && (
+        <BotaoIcone
+          variante="delete"
+          label={`Excluir ${descricao}`}
+          titulo="Excluir"
+          onClick={onExcluir}
+          disabled={disabled || processandoId === item._id}
+        >
+          <img src={deleteIcon} alt="" className="icon" />
+        </BotaoIcone>
+      )}
     </>
   );
 }

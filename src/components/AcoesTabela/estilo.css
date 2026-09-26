@@ -54,6 +54,11 @@
   background: #eaf9f2;
 }
 
+.icon-button.view {
+  background: #e7f1fb;
+  color: #25618f;
+}
+
 .icon-button.delete {
   background: #fdeceb;
   color: #b63b35;

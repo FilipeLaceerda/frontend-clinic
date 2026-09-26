@@ -1,11 +1,9 @@
 import AgendaDoDia from '../components/AgendaDoDia';
-import Header from '../components/Header';
 import Pagina from '../components/Pagina';
 
-export default function Home() {
+export default function Agenda() {
   return (
     <Pagina>
-      <Header titulo="Bem-vinda ao + Clinic" />
       <AgendaDoDia />
     </Pagina>
   );

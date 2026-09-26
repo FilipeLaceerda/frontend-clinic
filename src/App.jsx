@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import BarraLateral from "./components/BarraLateral";
 import Home from "./pages/Home";
+import Agenda from './pages/Agenda';
 import Atendimentos from "./pages/Atendimentos/Atendimentos";
 import FormularioAtendimento from "./pages/FormularioAtendimento/FormularioAtendimento";
 import VisualizarAtendimento from "./pages/VisualizarAtendimento/VisualizarAtendimento";
@@ -11,7 +12,7 @@ import FormularioSecretaria from "./pages/FormularioSecretaria/FormularioSecreta
 import FormularioProcedimento from './pages/FormularioProcedimento/FormularioProcedimento';
 
 const paginas = [
-  ["/", "Home"],
+  ['/', 'Agenda'],
   ["/atendimentos", "Atendimentos"],
   ["/dentistas", "Dentistas"],
   ["/procedimentos", "Procedimentos"],
@@ -24,7 +25,7 @@ export default function App() {
       <BarraLateral paginas={paginas} />
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Agenda />} />
           <Route path="/atendimentos" element={<Atendimentos />} />
           <Route
             path="/atendimentos/novo"
