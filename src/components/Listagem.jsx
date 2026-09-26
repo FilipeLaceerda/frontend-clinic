@@ -24,7 +24,7 @@ export default function Listagem({ titulo, descricao, carregar, colunas }) {
   ));
 
   return (
-    <section>
+    <section className="listagem">
       <header><span className="eyebrow">PAINEL DA CLÍNICA</span><h1>{titulo}</h1><p>{descricao}</p></header>
       <div className="card">
         <div className="toolbar">
