@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AcoesTabela from "../components/AcoesTabela";
+import BotaoCadastrar from "../components/BotaoCadastrar/BotaoCadastrar";
+import CabecalhoComAcao from "../components/CabecalhoComAcao";
 import { listar, atualizar, excluir } from "../services/secretariaService";
 
 const normalizar = (valor) =>
@@ -9,6 +12,7 @@ const normalizar = (valor) =>
     .toLowerCase();
 
 export default function Secretarias() {
+  const navigate = useNavigate();
   const [dados, setDados] = useState([]);
   const [busca, setBusca] = useState("");
   const [carregando, setCarregando] = useState(true);
@@ -115,11 +119,16 @@ export default function Secretarias() {
 
   return (
     <section>
-      <header>
-        <span className="eyebrow">PAINEL DA CLÍNICA</span>
-        <h1>Secretárias</h1>
-        <p>Equipe responsável pela recepção e pelos agendamentos.</p>
-      </header>
+      <CabecalhoComAcao
+        titulo="Secretárias"
+        descricao="Equipe responsável pela recepção e pelos agendamentos."
+        acao={
+          <BotaoCadastrar
+            labelButton="Cadastrar secretária"
+            onClick={() => navigate("/secretarias/novo")}
+          />
+        }
+      />
 
       <div className="card">
         <div className="toolbar">
@@ -132,6 +141,7 @@ export default function Secretarias() {
               onChange={(event) => setBusca(event.target.value)}
             />
           </label>
+
           {!carregando && !erro && (
             <span role="status">{filtrados.length} registro(s)</span>
           )}
