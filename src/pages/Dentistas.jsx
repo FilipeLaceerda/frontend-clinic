@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../components/AcoesTabela/estilo.css";
 
 import Listagem from "../components/Listagem";
 import FormDentista from "../components/dentistas/FormDentista";
@@ -116,7 +117,7 @@ export default function Dentistas() {
         colunas={colunas}
         atualizacao={atualizacao}
         renderAcoes={(dentista) => (
-          <div className="acoes">
+          <div className="table-actions">
             <button type="button" onClick={() => editarDentista(dentista)}>
               Editar
             </button>
