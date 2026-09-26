@@ -1,0 +1,32 @@
+.card {
+  background: white;
+  border: 1px solid #dfe7e8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.toolbar {
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+}
+
+.toolbar span {
+  color: #637579;
+  font-size: 13px;
+  padding-bottom: 12px;
+}
+
+.notice {
+  padding: 24px;
+  color: #53696e;
+}
+
+@media (max-width: 760px) {
+  .toolbar {
+    align-items: start;
+    flex-direction: column;
+  }
+}

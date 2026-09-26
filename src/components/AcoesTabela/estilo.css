@@ -18,6 +18,8 @@
   justify-content: center;
   width: 34px;
   height: 34px;
+  min-width: 34px;
+  min-height: 34px;
   padding: 0;
   border-radius: 8px;
   background: #edf5f4;
@@ -27,6 +29,9 @@
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .icon-button:hover {
@@ -54,16 +59,23 @@
   color: #b63b35;
 }
 
+.icon-button.secondary,
+.icon-button.success {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 34px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
 .icon-button.secondary {
   background: #d8e0e2;
   color: #35515a;
-  padding: 8px 35px;
 }
 
 .icon-button.success {
   background: #117468;
   color: white;
-  width: auto;
-  padding: 8px 12px;
   margin-right: 8px;
 }
