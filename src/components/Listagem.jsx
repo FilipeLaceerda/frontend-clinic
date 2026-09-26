@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 
 export default function Listagem({
-  titulo = "Listagem",
-  descricao = "",
+  titulo = "",
   recurso,
   carregar = null,
   colunas = [],
@@ -81,11 +80,6 @@ export default function Listagem({
 
   return (
     <section>
-      <header>
-        <span className="eyebrow">PAINEL DA CLÍNICA</span>
-        <h1>{titulo}</h1>
-        <p>{descricao}</p>
-      </header>
 
       <div className="card">
         <div className="toolbar">

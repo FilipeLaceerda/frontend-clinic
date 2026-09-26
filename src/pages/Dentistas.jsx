@@ -1,11 +1,11 @@
 import { useState } from "react";
-import "../components/AcoesTabela/estilo.css";
 
+import AcoesTabela from '../components/AcoesTabela';
 import Listagem from "../components/Listagem";
 import FormDentista from "../components/dentistas/FormDentista";
 import { atualizar, criar, excluir, listar } from "../services/dentistaService";
-
-const RECURSO = "dentistas";
+import CabecalhoComAcao from "../components/CabecalhoComAcao";
+import Botao from '../components/Botao';
 
 const colunas = [
   { campo: "nome", titulo: "Nome" },
@@ -88,11 +88,11 @@ export default function Dentistas() {
 
   return (
     <>
-      <div className="toolbar">
-        <button type="button" onClick={novoDentista}>
-          Novo dentista
-        </button>
-      </div>
+      <CabecalhoComAcao
+        titulo="Dentistas"
+        descricao="Profissionais e especialidades da clínica."
+        acao={<Botao onClick={novoDentista}>Novo dentista</Botao>}
+      />
 
       {mostrarFormulario && (
         <FormDentista
@@ -110,20 +110,17 @@ export default function Dentistas() {
       )}
 
       <Listagem
-        titulo="Dentistas"
-        descricao="Profissionais e especialidades da clínica."
-        recurso={RECURSO}
+        tituloTabela="Dentistas"
         carregar={listar}
         colunas={colunas}
         atualizacao={atualizacao}
         renderAcoes={(dentista) => (
           <div className="table-actions">
-            <button type="button" onClick={() => editarDentista(dentista)}>
-              Editar
-            </button>
-            <button type="button" onClick={() => excluirDentista(dentista)}>
-              Excluir
-            </button>
+            <AcoesTabela
+              item={dentista}
+              onEditar={() => editarDentista(dentista)}
+              onExcluir={() => excluirDentista(dentista)}
+            />
           </div>
         )}
       />

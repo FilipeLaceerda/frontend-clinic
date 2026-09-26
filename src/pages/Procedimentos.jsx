@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react';
 import { listar } from '../services/procedimentoService';
 import { moeda } from '../utils/formatadores';
-
-import Header from '../components/Header';
-import CampoBusca from '../components/CampoBusca';
-import Tabela from '../components/Tabela';
-
+import CabecalhoComAcao from '../components/CabecalhoComAcao';
+import Listagem from '../components/Listagem';
+import Pagina from '../components/Pagina';
 
 const colunas = [
   { campo: 'nome', titulo: 'Nome' },
@@ -34,8 +31,8 @@ export default function Procedimentos() {
   );
 
   return (
-    <section>
-      <Header
+    <Pagina>
+      <CabecalhoComAcao
         titulo="Procedimentos"
         descricao="Consulte os procedimentos oferecidos e seus valores."
       />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import CabecalhoComAcao from '../CabecalhoComAcao';
 import CampoFormulario from '../CampoFormulario';
 import CampoInput from '../CampoInput';
@@ -30,6 +30,10 @@ function horario(valor) {
   return valor ? valor.slice(0, 5) : '—';
 }
 
+function dataISO(valor) {
+  return String(valor ?? '').slice(0, 10);
+}
+
 const colunas = [
   {
     campo: 'horario_inicio',
@@ -53,6 +57,21 @@ const colunas = [
 export default function AgendaDoDia() {
   const [dataSelecionada, setDataSelecionada] = useState(dataDeHoje);
 
+  const carregarAgenda = useCallback(
+    async (_, signal) => {
+      const atendimentos = await listar({}, signal);
+
+      return atendimentos
+        .filter((atendimento) => dataISO(atendimento.data) === dataSelecionada)
+        .sort((primeiro, segundo) =>
+          String(primeiro.horario_inicio).localeCompare(
+            String(segundo.horario_inicio),
+          ),
+        );
+    },
+    [dataSelecionada],
+  );
+
   return (
     <section>
       <CabecalhoComAcao
@@ -69,11 +88,9 @@ export default function AgendaDoDia() {
         }
       />
       <Listagem
-        titulo="Agenda do dia"
-        descricao=""
-        carregar={listar}
+        tituloTabela="Agenda do dia"
+        carregar={carregarAgenda}
         colunas={colunas}
-        mostrarCabecalho={false}
         rotuloBusca="Buscar na agenda"
         placeholderBusca="Atendimento, CPF, status ou observação"
         buscarEm={(atendimento) => [
@@ -82,13 +99,6 @@ export default function AgendaDoDia() {
           atendimento.status,
           atendimento.observacao,
         ]}
-        filtrarDados={(atendimentos) =>
-          atendimentos
-            .filter((atendimento) => atendimento.data === dataSelecionada)
-            .sort((primeiro, segundo) =>
-              primeiro.horario_inicio.localeCompare(segundo.horario_inicio),
-            )
-        }
         mensagemVazio={`Nenhum atendimento para ${dataBR(dataSelecionada)}.`}
       />
     </section>
