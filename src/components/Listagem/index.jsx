@@ -1,10 +1,37 @@
 import { useEffect, useState } from 'react';
 import Header from '../Header';
 import CampoBusca from '../CampoBusca';
+import Botao from '../Botao';
+import MensagemEstado from '../MensagemEstado';
 import Tabela from '../Tabela';
 import './estilo.css';
 
-export default function Listagem({ titulo, descricao, carregar, colunas }) {
+function normalizar(valor) {
+  return String(valor ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function mensagemDoErro(error) {
+  return (
+    error.response?.data?.error ||
+    error.response?.data?.mensagem ||
+    error.response?.data?.message ||
+    'Não foi possível carregar os dados. Verifique o backend e tente novamente.'
+  );
+}
+
+export default function Listagem({
+  titulo,
+  descricao,
+  carregar,
+  colunas,
+  mostrarCabecalho = true,
+  rotuloBusca = 'Buscar na lista',
+  placeholderBusca = 'Digite para buscar…',
+  buscarEm,
+}) {
   const [dados, setDados] = useState([]);
   const [busca, setBusca] = useState('');
   const [carregando, setCarregando] = useState(true);
@@ -16,33 +43,59 @@ export default function Listagem({ titulo, descricao, carregar, colunas }) {
     setCarregando(true);
     setErro('');
     carregar({}, controller.signal)
-      .then((lista) => { if (!controller.signal.aborted) setDados(lista); })
-      .catch((error) => { if (!controller.signal.aborted) setErro(error.response?.data?.error || error.response?.data?.mensagem || error.response?.data?.message || 'Não foi possível carregar os dados. Verifique o backend e tente novamente.'); })
-      .finally(() => { if (!controller.signal.aborted) setCarregando(false); });
+      .then((lista) => {
+        if (!controller.signal.aborted) setDados(lista);
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) setErro(mensagemDoErro(error));
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setCarregando(false);
+      });
     return () => controller.abort();
   }, [carregar, tentativa]);
 
-  const normalizar = (valor) => String(valor ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  const filtrados = dados.filter((item) => colunas.some((coluna) =>
-    normalizar(coluna.formatar ? coluna.formatar(item[coluna.campo]) : item[coluna.campo]).includes(normalizar(busca.trim())),
-  ));
+  const filtrados = dados.filter((item) => {
+    const valores = buscarEm
+      ? buscarEm(item)
+      : colunas
+        .filter((coluna) => !coluna.renderizar)
+        .map((coluna) => coluna.formatar ? coluna.formatar(item[coluna.campo]) : item[coluna.campo]);
+
+    return valores.some((valor) => normalizar(valor).includes(normalizar(busca.trim())));
+  });
 
   return (
-    <section>
-      <Header titulo={titulo} descricao={descricao} />
+    <section className="listagem">
+      {mostrarCabecalho && <Header titulo={titulo} descricao={descricao} />}
       <div className="card">
         <div className="toolbar">
           <CampoBusca
-            rotulo="Buscar na lista"
-            placeholder="Digite para buscar…"
+            rotulo={rotuloBusca}
+            placeholder={placeholderBusca}
             value={busca}
             onChange={(event) => setBusca(event.target.value)}
           />
-          {!carregando && !erro && <span role="status">{filtrados.length} registro(s)</span>}
+          {!carregando && !erro && (
+            <span role="status">{filtrados.length} registro(s)</span>
+          )}
         </div>
-        {carregando ? <p className="notice" role="status">Carregando dados…</p> : erro ? (
-          <div className="notice" role="alert"><p>{erro}</p><button onClick={() => setTentativa((valor) => valor + 1)}>Tentar novamente</button></div>
-        ) : filtrados.length === 0 ? <p className="notice" role="status">Nenhum registro encontrado.</p> : (
+        {carregando ? (
+          <MensagemEstado>Carregando dados…</MensagemEstado>
+        ) : erro ? (
+          <MensagemEstado
+            tipo="erro"
+            acao={
+              <Botao onClick={() => setTentativa((valor) => valor + 1)}>
+                Tentar novamente
+              </Botao>
+            }
+          >
+            {erro}
+          </MensagemEstado>
+        ) : filtrados.length === 0 ? (
+          <MensagemEstado>Nenhum registro encontrado.</MensagemEstado>
+        ) : (
           <Tabela titulo={titulo} colunas={colunas} dados={filtrados} />
         )}
       </div>
