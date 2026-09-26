@@ -1,0 +1,65 @@
+.barra-lateral {
+  background: #fff;
+  border-right: 1px solid #dfe7e8;
+  padding: 32px 20px;
+}
+
+.barra-lateral .brand {
+  color: #117468;
+  font-size: 28px;
+  font-weight: 750;
+}
+
+.barra-lateral p {
+  color: #637579;
+  font-size: 13px;
+  margin: 8px 0 36px;
+}
+
+.barra-lateral nav {
+  display: grid;
+  gap: 8px;
+}
+
+.barra-lateral nav a {
+  padding: 13px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.barra-lateral nav a:hover {
+  background: #f0f5f4;
+}
+
+.barra-lateral nav a.active {
+  background: #e2f2ee;
+  color: #126557;
+  font-weight: 600;
+}
+
+.barra-lateral small {
+  display: block;
+  color: #637579;
+  margin-top: 40px;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .barra-lateral {
+    border-right: 0;
+    border-bottom: 1px solid #dfe7e8;
+    padding: 20px;
+  }
+
+  .barra-lateral p {
+    margin-bottom: 20px;
+  }
+
+  .barra-lateral nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .barra-lateral small {
+    margin-top: 16px;
+  }
+}

@@ -1,0 +1,33 @@
+.table-scroll {
+    overflow-x: auto;
+}
+
+.table-scroll table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+}
+
+.table-scroll th {
+    color: #53696e;
+    background: #f7f9fa;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.table-scroll th,
+.table-scroll td {
+    padding: 16px 20px;
+    border-top: 1px solid #e8eded;
+}
+
+.table-scroll td {
+    min-width: 100px;
+    line-height: 1.5;
+}
+
+.table-scroll tbody tr:hover {
+    background: #fafcfc;
+}

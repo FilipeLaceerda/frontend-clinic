@@ -1,0 +1,12 @@
+.cabecalho-com-acao {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+@media (max-width: 760px) {
+  .cabecalho-com-acao {
+    display: block;
+  }
+}

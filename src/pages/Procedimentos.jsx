@@ -1,5 +1,6 @@
+import { listar } from '../services/procedimentoService';
 import Listagem from '../components/Listagem';
-import { moeda } from '../services/api';
+import { moeda } from '../utils/formatadores';
 
 const colunas = [
   { campo: 'nome', titulo: 'Nome' },
@@ -9,5 +10,5 @@ const colunas = [
 ];
 
 export default function Procedimentos() {
-  return <Listagem titulo="Procedimentos" descricao="Consulte os procedimentos oferecidos e seus valores." recurso="procedimentos" colunas={colunas} />;
+  return <Listagem titulo="Procedimentos" descricao="Consulte os procedimentos oferecidos e seus valores." carregar={listar} colunas={colunas} />;
 }

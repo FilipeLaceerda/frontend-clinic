@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { listar } from "../services/api";
+
+import api from "../services/api";
 
 export default function Listagem({
   titulo = "Listagem",
   descricao = "",
   recurso,
+  carregar = null,
   colunas = [],
   atualizacao = 0,
   renderAcoes = null,
@@ -21,25 +23,46 @@ export default function Listagem({
     setCarregando(true);
     setErro("");
 
-    listar(recurso, controller.signal)
-      .then((lista) => {
-        if (!controller.signal.aborted) {
-          setDados(lista);
+    const executarCarregamento = async () => {
+      try {
+        let resultado;
+
+        if (carregar) {
+          resultado = await carregar({}, controller.signal);
+        } else if (recurso) {
+          const response = await api.get(`/${recurso}`, {
+            signal: controller.signal,
+          });
+          resultado = Array.isArray(response.data)
+            ? response.data
+            : (response.data?.data ?? []);
         }
-      })
-      .catch((error) => {
+
         if (!controller.signal.aborted) {
-          setErro(error.message);
+          setDados(resultado ?? []);
         }
-      })
-      .finally(() => {
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          const mensagem =
+            error?.response?.data?.error ||
+            error?.response?.data?.mensagem ||
+            error?.response?.data?.message ||
+            error?.message ||
+            "Não foi possível carregar os dados. Verifique o backend e tente novamente.";
+
+          setErro(mensagem);
+        }
+      } finally {
         if (!controller.signal.aborted) {
           setCarregando(false);
         }
-      });
+      }
+    };
+
+    executarCarregamento();
 
     return () => controller.abort();
-  }, [recurso, tentativa, atualizacao]);
+  }, [carregar, recurso, tentativa, atualizacao]);
 
   const normalizar = (valor) =>
     String(valor ?? "")

@@ -1,0 +1,12 @@
+.grupo-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (max-width: 640px) {
+  .grupo-acoes {
+    flex-direction: column-reverse;
+  }
+}

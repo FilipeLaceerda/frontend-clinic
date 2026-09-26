@@ -1,0 +1,30 @@
+.detalhes-atendimento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.detalhes-atendimento div {
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #dfe7e8;
+  border-radius: 10px;
+}
+
+.detalhes-atendimento dt {
+  color: #637579;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.detalhes-atendimento dd {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .detalhes-atendimento {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,9 +1,11 @@
-import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
-import Atendimentos from './pages/Atendimentos';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import BarraLateral from './components/BarraLateral';
+import Atendimentos from './pages/Atendimentos/Atendimentos';
+import FormularioAtendimento from './pages/FormularioAtendimento/FormularioAtendimento';
+import VisualizarAtendimento from './pages/VisualizarAtendimento/VisualizarAtendimento';
 import Dentistas from './pages/Dentistas';
 import Procedimentos from './pages/Procedimentos';
 import Secretarias from './pages/Secretarias';
-import { useApi } from './services/api';
 
 const paginas = [
   ['/atendimentos', 'Atendimentos'], ['/dentistas', 'Dentistas'],
@@ -13,17 +15,13 @@ const paginas = [
 export default function App() {
   return (
     <div className="layout">
-      <aside>
-        <a className="brand" href="/">+ Clinic</a>
-        <p>Gestão odontológica</p>
-        <nav aria-label="Menu principal">
-          {paginas.map(([path, label]) => <NavLink key={path} to={path}>{label}</NavLink>)}
-        </nav>
-        <small>{useApi ? 'Conectado à configuração da API' : 'Demonstração · dados locais'}</small>
-      </aside>
+      <BarraLateral paginas={paginas} />
       <main>
         <Routes>
           <Route path="/atendimentos" element={<Atendimentos />} />
+          <Route path="/atendimentos/novo" element={<FormularioAtendimento />} />
+          <Route path="/atendimentos/:id/editar" element={<FormularioAtendimento />} />
+          <Route path="/atendimentos/:id" element={<VisualizarAtendimento />} />
           <Route path="/dentistas" element={<Dentistas />} />
           <Route path="/procedimentos" element={<Procedimentos />} />
           <Route path="/secretarias" element={<Secretarias />} />

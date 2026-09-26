@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Listagem from "../components/Listagem";
 import FormDentista from "../components/dentistas/FormDentista";
-import { atualizar, criar, remover } from "../services/api";
+import { atualizar, criar, excluir, listar } from "../services/dentistaService";
 
 const RECURSO = "dentistas";
 
@@ -48,9 +48,9 @@ export default function Dentistas() {
       setErro("");
 
       if (dentistaSelecionado) {
-        await atualizar(RECURSO, dentistaSelecionado._id, dados);
+        await atualizar(dentistaSelecionado._id, dados);
       } else {
-        await criar(RECURSO, dados);
+        await criar(dados);
         localStorage.removeItem("dentista-rascunho");
       }
 
@@ -72,7 +72,7 @@ export default function Dentistas() {
 
     try {
       setErro("");
-      await remover(RECURSO, dentista._id);
+      await excluir(dentista._id);
 
       if (dentistaSelecionado?._id === dentista._id) {
         cancelarFormulario();
@@ -111,6 +111,7 @@ export default function Dentistas() {
         titulo="Dentistas"
         descricao="Profissionais e especialidades da clínica."
         recurso={RECURSO}
+        carregar={listar}
         colunas={colunas}
         atualizacao={atualizacao}
         renderAcoes={(dentista) => (
